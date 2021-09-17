@@ -13,9 +13,9 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
-    @GetMapping(value = "/{title}")
-    public @ResponseBody Book findOne(@PathVariable String title) {
-        return bookService.findByTitle(title);
+    @GetMapping(value = "/{id}")
+    public @ResponseBody Book findOne(@PathVariable Long id) {
+        return bookService.findById(id);
     }
     @GetMapping
     public @ResponseBody List<Book> findAll() {
@@ -25,13 +25,13 @@ public class BookController {
     public @ResponseBody Book insert(@RequestBody Book book) {
         return bookService.insert(book);
     }
-    @DeleteMapping(value = "/{title}")
-    public @ResponseBody boolean delete(@PathVariable String title) {
-        return bookService.delete(title);
+    @DeleteMapping(value = "/{id}")
+    public @ResponseBody boolean delete(@PathVariable Long id) {
+        return bookService.delete(id);
     }
-    @PutMapping(value = "/{title}")
-    public @ResponseBody boolean update(@PathVariable String title, @RequestBody Book book) {
-        return bookService.update(title, book);
+    @PutMapping(value = "/{id}")
+    public @ResponseBody boolean update(@PathVariable Long id, @RequestBody Book book) {
+        return bookService.update(id, book);
     }
 
 }

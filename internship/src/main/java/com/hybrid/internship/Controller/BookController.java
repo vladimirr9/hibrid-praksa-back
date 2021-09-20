@@ -1,5 +1,6 @@
 package com.hybrid.internship.Controller;
 
+import com.hybrid.internship.Exceptions.BookNotFoundException;
 import com.hybrid.internship.Model.Book;
 import com.hybrid.internship.Service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ public class BookController {
     private BookService bookService;
 
     @GetMapping(value = "/{id}")
-    public @ResponseBody Book findOne(@PathVariable Long id) {
+    public @ResponseBody Book findOne(@PathVariable Long id) throws BookNotFoundException {
         return bookService.findById(id);
     }
     @GetMapping
@@ -26,11 +27,11 @@ public class BookController {
         return bookService.insert(book);
     }
     @DeleteMapping(value = "/{id}")
-    public @ResponseBody boolean delete(@PathVariable Long id) {
-        return bookService.delete(id);
+    public @ResponseBody void delete(@PathVariable Long id) throws BookNotFoundException {
+        bookService.delete(id);
     }
     @PutMapping(value = "/{id}")
-    public @ResponseBody boolean update(@PathVariable Long id, @RequestBody Book book) {
+    public @ResponseBody Book update(@PathVariable Long id, @RequestBody Book book) throws BookNotFoundException {
         return bookService.update(id, book);
     }
 

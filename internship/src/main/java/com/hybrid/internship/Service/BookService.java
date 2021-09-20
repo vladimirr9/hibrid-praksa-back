@@ -1,10 +1,10 @@
 package com.hybrid.internship.Service;
 
+import com.hybrid.internship.Exceptions.BookNotFoundException;
 import com.hybrid.internship.Model.Book;
 import com.hybrid.internship.Repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -12,33 +12,31 @@ import java.util.Objects;
 @Service
 public class BookService {
     @Autowired
-    private BookRepository bookRepository;
+    private BookRepository repository;
 
 
     public List<Book> findAll() {
-        return bookRepository.findAll();
+        return repository.findAll();
     }
 
     public Book insert(Book book) {
-        return bookRepository.save(book);
+        return repository.save(book);
     }
 
-    public Book findById(Long id) {
-        return bookRepository.findById(id).orElse(null);
+    public Book findById(Long id) throws BookNotFoundException {
+        Objects.requireNonNull(id);
+        return repository.findById(id).orElseThrow(() -> new BookNotFoundException("No book with this ID found"));
     }
-    public boolean delete(Long id) {
-        Book bookForDeletion = bookRepository.findById(id).get();
-        bookRepository.delete(bookForDeletion);
-        return true;
+    public void delete(Long id) throws BookNotFoundException {
+        Book bookForDeletion = findById(id);
+        repository.delete(bookForDeletion);
     }
-    public boolean update(long id, Book newBook) {
-        Book bookForUpdate = bookRepository.findById(id).orElse(null);
+    public Book update(long id, Book newBook) throws BookNotFoundException {
+        Book bookForUpdate = findById(id);
         if (newBook.getAuthor() != null)
             bookForUpdate.setAuthor(newBook.getAuthor());
         if (newBook.getTitle() != null)
             bookForUpdate.setTitle(newBook.getTitle());
-        bookRepository.save(bookForUpdate);
-        return true;
-
+        return repository.save(bookForUpdate);
     }
 }

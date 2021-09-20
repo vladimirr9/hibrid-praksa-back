@@ -1,6 +1,7 @@
 package com.hybrid.internship.Model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class Book {
@@ -13,8 +14,8 @@ public class Book {
     public Book(){}
 
     public Book(String title, String author) {
-        this.title = title;
-        this.author = author;
+        this.title = Objects.requireNonNull(title);
+        this.author = Objects.requireNonNull(author);
     }
 
     public String getTitle() {
@@ -30,10 +31,10 @@ public class Book {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.title = Objects.requireNonNull(title);
     }
 
     public void setAuthor(String author) {
-        this.author = author;
+        this.author = Objects.requireNonNull(author);
     }
 }

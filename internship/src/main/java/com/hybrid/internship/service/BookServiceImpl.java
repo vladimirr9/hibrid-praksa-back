@@ -33,7 +33,8 @@ public class BookServiceImpl implements BookService{
     }
 
     public Book update(Long id, Book newBook) {
-        Book bookForUpdate = new Book(id, newBook.getTitle(), newBook.getAuthor());
+        Book existingBook = findById(id);
+        Book bookForUpdate = new Book(existingBook.getId(), newBook.getTitle(), newBook.getAuthor());
         return repository.save(bookForUpdate);
     }
 }

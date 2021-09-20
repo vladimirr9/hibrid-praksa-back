@@ -15,17 +15,16 @@ public class Book {
 
 
     public Book(Long id, String title, String author) {
-        init(id, title, author);
+        init(title, author);
     }
 
-    private void init(Long id, String title, String author) {
-        this.id = Objects.requireNonNull(id);
+    private void init(String title, String author) {
         this.title = Objects.requireNonNull(title);
         this.author = Objects.requireNonNull(author);
     }
 
     public Book(String title, String author) {
-        init(null, title, author);
+        init(title, author);
     }
 
     public String getTitle() {

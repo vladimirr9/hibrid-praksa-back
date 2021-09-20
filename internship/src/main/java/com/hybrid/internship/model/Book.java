@@ -28,6 +28,10 @@ public class Book {
         init(title, author);
     }
 
+    public long getId() {
+        return id;
+    }
+
     public String getTitle() {
         return title;
     }

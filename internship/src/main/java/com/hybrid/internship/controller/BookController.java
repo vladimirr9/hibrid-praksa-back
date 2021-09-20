@@ -5,6 +5,7 @@ import com.hybrid.internship.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -14,23 +15,23 @@ public class BookController {
     private BookService bookService;
 
     @GetMapping(value = "/{id}")
-    public @ResponseBody Book findOne(@PathVariable Long id) {
+    public Book findOne(@PathVariable Long id, HttpServletRequest req) {
         return bookService.findById(id);
     }
     @GetMapping
-    public @ResponseBody List<Book> findAll() {
+    public List<Book> findAll() {
         return bookService.findAll();
     }
     @PostMapping
-    public @ResponseBody Book insert(@RequestBody Book book) {
+    public Book insert(@RequestBody Book book) {
         return bookService.insert(book);
     }
     @DeleteMapping(value = "/{id}")
-    public @ResponseBody void delete(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
         bookService.delete(id);
     }
     @PutMapping(value = "/{id}")
-    public @ResponseBody Book update(@PathVariable Long id, @RequestBody Book book) {
+    public Book update(@PathVariable Long id, @RequestBody Book book) {
         return bookService.update(id, book);
     }
 

@@ -3,10 +3,10 @@ package com.hybrid.internship.exception.handler;
 import java.util.Date;
 
 public class ErrorMessage {
-    private int statusCode;
-    private String message;
-    private Date date;
-    private String description;
+    private final int statusCode;
+    private final String message;
+    private final Date date;
+    private final String description;
 
     public ErrorMessage(int statusCode, String message, Date date, String description) {
         this.statusCode = statusCode;

@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -29,8 +28,8 @@ public class BookController {
     }
     @PostMapping
     public ResponseEntity<Book> insert(@RequestBody Book book) {
-        bookService.insert(book);
-        return new ResponseEntity<>(book, HttpStatus.CREATED);
+        Book newBook = bookService.insert(book);
+        return new ResponseEntity<>(newBook, HttpStatus.CREATED);
     }
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {

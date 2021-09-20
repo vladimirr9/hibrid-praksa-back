@@ -12,12 +12,12 @@ import java.util.Date;
 @ControllerAdvice
 public class ControllerExceptionHandler {
     @ExceptionHandler(BookNotFoundException.class)
-    public ResponseEntity<ErrorMessage> resourceNotFoundException(BookNotFoundException ex, WebRequest request) {
+    public ResponseEntity<ErrorMessage> bookNotFoundException(BookNotFoundException ex, WebRequest request) {
         ErrorMessage message = new ErrorMessage(
                 HttpStatus.NOT_FOUND.value(),
                 ex.getMessage(),
                 new Date(),
                 request.getDescription(false));
-        return new ResponseEntity<ErrorMessage>(message, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
     }
 }

@@ -15,6 +15,7 @@ public class Book {
 
 
     public Book(Long id, String title, String author) {
+        Objects.requireNonNull(id);
         this.id = id;
         init(title, author);
     }

@@ -36,19 +36,4 @@ public class Book {
         return author;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public void setTitle(String title) {
-        this.title = Objects.requireNonNull(title);
-    }
-
-    public void setAuthor(String author) {
-        this.author = Objects.requireNonNull(author);
-    }
 }

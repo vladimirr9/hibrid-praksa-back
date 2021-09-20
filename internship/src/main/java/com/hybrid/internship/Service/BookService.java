@@ -26,16 +26,14 @@ public class BookService {
         Objects.requireNonNull(id);
         return repository.findById(id).orElseThrow(() -> new BookNotFoundException("No book with this ID found"));
     }
+
     public void delete(Long id) {
         Book bookForDeletion = findById(id);
         repository.delete(bookForDeletion);
     }
-    public Book update(long id, Book newBook) {
-        Book bookForUpdate = findById(id);
-        if (newBook.getAuthor() != null)
-            bookForUpdate.setAuthor(newBook.getAuthor());
-        if (newBook.getTitle() != null)
-            bookForUpdate.setTitle(newBook.getTitle());
+
+    public Book update(Long id, Book newBook) {
+        Book bookForUpdate = new Book(id, newBook.getTitle(), newBook.getAuthor());
         return repository.save(bookForUpdate);
     }
 }

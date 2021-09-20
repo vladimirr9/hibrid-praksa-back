@@ -13,9 +13,19 @@ public class Book {
 
     public Book(){}
 
-    public Book(String title, String author) {
+
+    public Book(Long id, String title, String author) {
+        init(id, title, author);
+    }
+
+    private void init(Long id, String title, String author) {
+        this.id = Objects.requireNonNull(id);
         this.title = Objects.requireNonNull(title);
         this.author = Objects.requireNonNull(author);
+    }
+
+    public Book(String title, String author) {
+        init(null, title, author);
     }
 
     public String getTitle() {

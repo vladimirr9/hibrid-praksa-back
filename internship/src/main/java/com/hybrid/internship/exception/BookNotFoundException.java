@@ -1,4 +1,4 @@
-package com.hybrid.internship.Exceptions;
+package com.hybrid.internship.exception;
 
 public class BookNotFoundException  extends RuntimeException {
     public BookNotFoundException(String message) {

@@ -1,8 +1,7 @@
-package com.hybrid.internship.Controller;
+package com.hybrid.internship.controller;
 
-import com.hybrid.internship.Exceptions.BookNotFoundException;
-import com.hybrid.internship.Model.Book;
-import com.hybrid.internship.Service.BookService;
+import com.hybrid.internship.model.Book;
+import com.hybrid.internship.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

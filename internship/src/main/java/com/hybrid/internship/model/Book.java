@@ -1,4 +1,4 @@
-package com.hybrid.internship.Model;
+package com.hybrid.internship.model;
 
 import javax.persistence.*;
 import java.util.Objects;

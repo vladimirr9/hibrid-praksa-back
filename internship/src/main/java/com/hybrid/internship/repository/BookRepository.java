@@ -1,9 +1,7 @@
-package com.hybrid.internship.Repository;
+package com.hybrid.internship.repository;
 
-import com.hybrid.internship.Model.Book;
+import com.hybrid.internship.model.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
 

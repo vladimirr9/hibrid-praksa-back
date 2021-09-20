@@ -15,6 +15,7 @@ public class Book {
 
 
     public Book(Long id, String title, String author) {
+        this.id = id;
         init(title, author);
     }
 
@@ -37,6 +38,10 @@ public class Book {
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public void setTitle(String title) {

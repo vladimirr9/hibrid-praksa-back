@@ -14,7 +14,6 @@ public class BookService {
     @Autowired
     private BookRepository repository;
 
-
     public List<Book> findAll() {
         return repository.findAll();
     }
@@ -27,11 +26,11 @@ public class BookService {
         Objects.requireNonNull(id);
         return repository.findById(id).orElseThrow(() -> new BookNotFoundException("No book with this ID found"));
     }
-    public void delete(Long id) throws BookNotFoundException {
+    public void delete(Long id) {
         Book bookForDeletion = findById(id);
         repository.delete(bookForDeletion);
     }
-    public Book update(long id, Book newBook) throws BookNotFoundException {
+    public Book update(long id, Book newBook) {
         Book bookForUpdate = findById(id);
         if (newBook.getAuthor() != null)
             bookForUpdate.setAuthor(newBook.getAuthor());

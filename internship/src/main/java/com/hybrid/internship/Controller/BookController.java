@@ -15,7 +15,7 @@ public class BookController {
     private BookService bookService;
 
     @GetMapping(value = "/{id}")
-    public @ResponseBody Book findOne(@PathVariable Long id) throws BookNotFoundException {
+    public @ResponseBody Book findOne(@PathVariable Long id) {
         return bookService.findById(id);
     }
     @GetMapping
@@ -27,11 +27,11 @@ public class BookController {
         return bookService.insert(book);
     }
     @DeleteMapping(value = "/{id}")
-    public @ResponseBody void delete(@PathVariable Long id) throws BookNotFoundException {
+    public @ResponseBody void delete(@PathVariable Long id) {
         bookService.delete(id);
     }
     @PutMapping(value = "/{id}")
-    public @ResponseBody Book update(@PathVariable Long id, @RequestBody Book book) throws BookNotFoundException {
+    public @ResponseBody Book update(@PathVariable Long id, @RequestBody Book book) {
         return bookService.update(id, book);
     }
 

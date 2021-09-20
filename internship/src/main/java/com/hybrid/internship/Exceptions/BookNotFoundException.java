@@ -1,8 +1,6 @@
 package com.hybrid.internship.Exceptions;
 
-import javassist.NotFoundException;
-
-public class BookNotFoundException  extends NotFoundException {
+public class BookNotFoundException  extends RuntimeException {
     public BookNotFoundException(String message) {
         super(message);
     }

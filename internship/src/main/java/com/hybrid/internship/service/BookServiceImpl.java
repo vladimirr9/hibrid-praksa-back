@@ -18,8 +18,9 @@ public class BookServiceImpl implements BookService{
         return repository.findAll();
     }
 
-    public Book insert(Book book) {
-        return repository.save(book);
+    public Book insert(Book newBook) {
+        Objects.requireNonNull(newBook);
+        return repository.save(newBook);
     }
 
     public Book findById(Long id) throws BookNotFoundException {
@@ -33,6 +34,7 @@ public class BookServiceImpl implements BookService{
     }
 
     public Book update(Long id, Book newBook) {
+        Objects.requireNonNull(newBook);
         Book existingBook = findById(id);
         Book bookForUpdate = new Book(existingBook.getId(), newBook.getTitle(), newBook.getAuthor());
         return repository.save(bookForUpdate);

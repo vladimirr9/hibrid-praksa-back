@@ -5,7 +5,14 @@ import com.hybrid.internship.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,13 +27,13 @@ public class BookController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Book> findOne(@PathVariable Long id, HttpServletRequest req) {
-        Book book = bookService.findById(id);
-        return new ResponseEntity<>(book, HttpStatus.OK);
+        Book found = bookService.findById(id);
+        return ResponseEntity.ok().body(found);
     }
     @GetMapping
     public ResponseEntity<List<Book>> findAll() {
         List<Book> found = bookService.findAll();
-        return new ResponseEntity<>(found, HttpStatus.OK);
+        return ResponseEntity.ok().body(found);
     }
     @PostMapping
     public ResponseEntity<Book> insert(@RequestBody Book book) {
@@ -42,12 +49,12 @@ public class BookController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
         bookService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
     @PutMapping(value = "/{id}")
     public ResponseEntity<Book> update(@PathVariable Long id, @RequestBody Book book) {
         Book updated = bookService.update(id, book);
-        return new ResponseEntity<>(updated, HttpStatus.OK);
+        return ResponseEntity.ok().body(updated);
 
     }
 

@@ -14,10 +14,8 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(BookNotFoundException.class)
     public ResponseEntity<ErrorMessage> bookNotFoundException(BookNotFoundException ex, WebRequest request) {
         ErrorMessage message = new ErrorMessage(
-                HttpStatus.NOT_FOUND.value(),
                 ex.getMessage(),
-                new Date(),
-                request.getDescription(false));
+                new Date());
         return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
     }
 }

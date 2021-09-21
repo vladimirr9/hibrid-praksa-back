@@ -15,10 +15,10 @@ public interface BookService {
 
     /**
      *
-     * @param book - Book to be added
+     * @param newBook - Book to be added
      * @return - Newly added book
      */
-    Book insert(Book book);
+    Book insert(Book newBook);
 
     /**
      *

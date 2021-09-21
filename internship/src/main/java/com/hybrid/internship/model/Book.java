@@ -7,7 +7,7 @@ import java.util.Objects;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String title;
     private String author;
 
@@ -29,7 +29,7 @@ public class Book {
         init(title, author);
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

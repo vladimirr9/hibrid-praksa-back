@@ -1,17 +1,26 @@
 package com.hybrid.internship.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
     private String title;
     private String author;
 
-    public Book(){}
+    @JsonManagedReference
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    private List<BookCopy> copies;
+
+    public Book(){
+    }
 
 
     public Book(Long id, String title, String author) {
@@ -41,4 +50,7 @@ public class Book {
         return author;
     }
 
+    public List<BookCopy> getCopies() {
+        return copies;
+    }
 }

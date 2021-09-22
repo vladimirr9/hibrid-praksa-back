@@ -14,12 +14,14 @@ import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
+@Table(name = "book_copy")
 public class BookCopy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     @NaturalId
+    @Column(name = "code")
     private String code;
     @JsonBackReference
     @ManyToOne

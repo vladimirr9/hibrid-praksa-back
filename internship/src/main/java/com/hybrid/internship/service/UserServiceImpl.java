@@ -2,8 +2,6 @@ package com.hybrid.internship.service;
 
 import com.hybrid.internship.exception.UserNotFoundException;
 import com.hybrid.internship.model.User;
-import com.hybrid.internship.model.User;
-import com.hybrid.internship.repository.UserRepository;
 import com.hybrid.internship.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

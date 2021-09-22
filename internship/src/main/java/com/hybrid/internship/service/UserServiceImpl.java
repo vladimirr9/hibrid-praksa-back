@@ -37,12 +37,11 @@ public class UserServiceImpl implements UserService {
 
     public User update(Long id, User newUser) {
         Objects.requireNonNull(newUser);
-        User existingUser = findById(id);
-        User userForUpdate = new User(existingUser.getId(),
-                existingUser.getEmail(),
-                existingUser.getPassword(),
-                existingUser.getFirstName(),
-                existingUser.getLastName());
+        User userForUpdate = new User(id,
+                newUser.getEmail(),
+                newUser.getPassword(),
+                newUser.getFirstName(),
+                newUser.getLastName());
         return repository.save(userForUpdate);
     }
 

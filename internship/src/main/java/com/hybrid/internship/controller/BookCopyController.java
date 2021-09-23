@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,7 @@ public class BookCopyController {
         return ResponseEntity.ok().body(foundDTO);
     }
     @PostMapping
-    public ResponseEntity<BookCopyResponseDTO> insert(@RequestBody BookCopyRequestDTO bookCopyRequestDTO) {
+    public ResponseEntity<BookCopyResponseDTO> insert(@RequestBody @Valid BookCopyRequestDTO bookCopyRequestDTO) {
         BookCopy bookCopy = modelMapper.fromDTO(bookCopyRequestDTO);
         BookCopy newBookCopy = bookCopyService.insert(bookCopy);
         URI location = ServletUriComponentsBuilder
@@ -68,7 +69,7 @@ public class BookCopyController {
         return ResponseEntity.noContent().build();
     }
     @PutMapping(value = "/{id}")
-    public ResponseEntity<BookCopyResponseDTO> update(@PathVariable Long id, @RequestBody BookCopyRequestDTO bookCopyRequestDTO) {
+    public ResponseEntity<BookCopyResponseDTO> update(@PathVariable Long id, @RequestBody @Valid BookCopyRequestDTO bookCopyRequestDTO) {
         BookCopy bookCopy = modelMapper.fromDTO(bookCopyRequestDTO);
         BookCopy updated = bookCopyService.update(id, bookCopy);
         BookCopyResponseDTO responseDTO = modelMapper.toResponseDTO(updated);

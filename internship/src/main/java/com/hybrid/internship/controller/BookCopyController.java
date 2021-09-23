@@ -1,6 +1,9 @@
 package com.hybrid.internship.controller;
 
 
+import com.hybrid.internship.dto.BookCopyRequestDTO;
+import com.hybrid.internship.dto.BookCopyResponseDTO;
+import com.hybrid.internship.dto.mapper.BookCopyMapper;
 import com.hybrid.internship.model.BookCopy;
 import com.hybrid.internship.service.BookCopyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,28 +29,37 @@ import java.util.List;
 public class BookCopyController {
     @Autowired
     private BookCopyService bookCopyService;
-
+    @Autowired
+    private BookCopyMapper modelMapper;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<BookCopy> findOne(@PathVariable Long id, HttpServletRequest req) {
+    public ResponseEntity<BookCopyResponseDTO> findOne(@PathVariable Long id, HttpServletRequest req) {
         BookCopy found = bookCopyService.findById(id);
-        return ResponseEntity.ok().body(found);
+        BookCopyResponseDTO responseDTO = modelMapper.toResponseDTO(found);
+        return ResponseEntity.ok().body(responseDTO);
     }
     @GetMapping
-    public ResponseEntity<List<BookCopy>> findAll() {
+    public ResponseEntity<List<BookCopyResponseDTO>> findAll() {
         List<BookCopy> found = bookCopyService.findAll();
-        return ResponseEntity.ok().body(found);
+        ArrayList<BookCopyResponseDTO> foundDTO = new ArrayList<>();
+        for (var bookCopy : found)
+        {
+            foundDTO.add(modelMapper.toResponseDTO(bookCopy));
+        }
+        return ResponseEntity.ok().body(foundDTO);
     }
     @PostMapping
-    public ResponseEntity<BookCopy> insert(@RequestBody BookCopy bookCopy) {
+    public ResponseEntity<BookCopyResponseDTO> insert(@RequestBody BookCopyRequestDTO bookCopyRequestDTO) {
+        BookCopy bookCopy = modelMapper.fromDTO(bookCopyRequestDTO);
         BookCopy newBookCopy = bookCopyService.insert(bookCopy);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(bookCopy.getId())
                 .toUri();
+        BookCopyResponseDTO responseDTO = modelMapper.toResponseDTO(newBookCopy);
         return ResponseEntity.created(location)
-                .body(newBookCopy);
+                .body(responseDTO);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -55,11 +68,10 @@ public class BookCopyController {
         return ResponseEntity.noContent().build();
     }
     @PutMapping(value = "/{id}")
-    public ResponseEntity<BookCopy> update(@PathVariable Long id, @RequestBody BookCopy bookCopy) {
+    public ResponseEntity<BookCopyResponseDTO> update(@PathVariable Long id, @RequestBody BookCopyRequestDTO bookCopyRequestDTO) {
+        BookCopy bookCopy = modelMapper.fromDTO(bookCopyRequestDTO);
         BookCopy updated = bookCopyService.update(id, bookCopy);
-        return ResponseEntity.ok().body(updated);
-
+        BookCopyResponseDTO responseDTO = modelMapper.toResponseDTO(updated);
+        return ResponseEntity.ok().body(responseDTO);
     }
-
-
 }

@@ -62,4 +62,8 @@ public class Book {
     public List<BookCopy> getCopies() {
         return copies;
     }
+
+    public void setId(Long id) {
+        this.id = Objects.requireNonNull(id);
+    }
 }

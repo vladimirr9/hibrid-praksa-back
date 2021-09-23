@@ -43,8 +43,7 @@ public class BookCopyController {
     public ResponseEntity<List<BookCopyResponseDTO>> findAll() {
         List<BookCopy> found = bookCopyService.findAll();
         ArrayList<BookCopyResponseDTO> foundDTO = new ArrayList<>();
-        for (var bookCopy : found)
-        {
+        for (var bookCopy : found) {
             foundDTO.add(modelMapper.toResponseDTO(bookCopy));
         }
         return ResponseEntity.ok().body(foundDTO);
@@ -56,7 +55,7 @@ public class BookCopyController {
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(bookCopy.getId())
+                .buildAndExpand(newBookCopy.getId())
                 .toUri();
         BookCopyResponseDTO responseDTO = modelMapper.toResponseDTO(newBookCopy);
         return ResponseEntity.created(location)

@@ -15,14 +15,17 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "book")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     @NotBlank(message = "Book must have a title")
+    @Column(name = "title")
     private String title;
     @NotBlank(message = "Book must have an author")
+    @Column(name = "author")
     private String author;
 
     @JsonManagedReference

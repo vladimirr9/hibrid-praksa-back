@@ -1,5 +1,8 @@
 package com.hybrid.internship.controller;
 
+import com.hybrid.internship.dto.UserRequestDTO;
+import com.hybrid.internship.dto.UserResponseDTO;
+import com.hybrid.internship.dto.mapper.UserMapper;
 import com.hybrid.internship.model.User;
 import com.hybrid.internship.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +19,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,27 +29,36 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserMapper userMapper;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<User> findOne(@PathVariable Long id, HttpServletRequest req) {
+    public ResponseEntity<UserResponseDTO> findOne(@PathVariable Long id, HttpServletRequest req) {
         User found = userService.findById(id);
-        return ResponseEntity.ok().body(found);
+        UserResponseDTO userResponseDTO = userMapper.toResponseDTO(found);
+        return ResponseEntity.ok().body(userResponseDTO);
     }
     @GetMapping
-    public ResponseEntity<List<User>> findAll() {
+    public ResponseEntity<List<UserResponseDTO>> findAll() {
         List<User> found = userService.findAll();
-        return ResponseEntity.ok().body(found);
+        ArrayList<UserResponseDTO> foundDTO = new ArrayList<>();
+        for (var user : found) {
+            foundDTO.add(userMapper.toResponseDTO(user));
+        }
+        return ResponseEntity.ok().body(foundDTO);
     }
     @PostMapping
-    public ResponseEntity<User> insert(@RequestBody User user) {
+    public ResponseEntity<UserResponseDTO> insert(@RequestBody @Valid UserRequestDTO userRequestDTO) {
+        User user = userMapper.fromDTO(userRequestDTO);
         User newUser = userService.insert(user);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(newUser.getId())
                 .toUri();
+        UserResponseDTO newUserDTO = userMapper.toResponseDTO(newUser);
         return ResponseEntity.created(location)
-                .body(newUser);
+                .body(newUserDTO);
     }
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
@@ -52,9 +66,11 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
     @PutMapping(value = "/{id}")
-    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity<UserResponseDTO> update(@PathVariable Long id, @RequestBody @Valid UserRequestDTO userRequestDTO) {
+        User user = userMapper.fromDTO(userRequestDTO);
         User updated = userService.update(id, user);
-        return ResponseEntity.ok().body(updated);
+        UserResponseDTO userResponseDTO = userMapper.toResponseDTO(updated);
+        return ResponseEntity.ok().body(userResponseDTO);
 
     }
 

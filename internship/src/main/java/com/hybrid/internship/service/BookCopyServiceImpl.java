@@ -41,8 +41,8 @@ public class BookCopyServiceImpl implements BookCopyService{
 
     public BookCopy update(Long id, BookCopy bookCopy) {
         Objects.requireNonNull(bookCopy);
-        BookCopy bookForUpdate = new BookCopy(id, bookCopy.getCode(), bookCopy.getBook());
-        return repository.save(bookForUpdate);
+        BookCopy bookCopyForUpdate = new BookCopy(id, bookCopy.getCode(), bookCopy.getBook());
+        return repository.save(bookCopyForUpdate);
     }
 
 

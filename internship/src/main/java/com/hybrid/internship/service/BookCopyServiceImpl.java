@@ -1,7 +1,6 @@
 package com.hybrid.internship.service;
 
 import com.hybrid.internship.exception.EntityNotFoundException;
-import com.hybrid.internship.model.Book;
 import com.hybrid.internship.model.BookCopy;
 import com.hybrid.internship.repository.BookCopyRepository;
 import org.springframework.beans.factory.annotation.Autowired;

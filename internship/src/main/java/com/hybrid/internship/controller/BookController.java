@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -37,7 +36,7 @@ public class BookController {
         return ResponseEntity.ok().body(found);
     }
     @PostMapping
-    public ResponseEntity<Book> insert(@RequestBody @Valid Book book) {
+    public ResponseEntity<Book> insert(@RequestBody Book book) {
         Book newBook = bookService.insert(book);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -53,7 +52,7 @@ public class BookController {
         return ResponseEntity.noContent().build();
     }
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Book> update(@PathVariable Long id, @Valid @RequestBody Book book) {
+    public ResponseEntity<Book> update(@PathVariable Long id, @RequestBody Book book) {
         Book updated = bookService.update(id, book);
         return ResponseEntity.ok().body(updated);
 

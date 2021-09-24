@@ -1,5 +1,8 @@
 package com.hybrid.internship.controller;
 
+import com.hybrid.internship.dto.BookRequestDTO;
+import com.hybrid.internship.dto.BookResponseDTO;
+import com.hybrid.internship.dto.mapper.BookMapper;
 import com.hybrid.internship.model.Book;
 import com.hybrid.internship.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,27 +29,36 @@ import java.util.List;
 public class BookController {
     @Autowired
     private BookService bookService;
+    @Autowired
+    private BookMapper bookMapper;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Book> findOne(@PathVariable Long id, HttpServletRequest req) {
+    public ResponseEntity<BookResponseDTO> findOne(@PathVariable Long id, HttpServletRequest req) {
         Book found = bookService.findById(id);
-        return ResponseEntity.ok().body(found);
+        BookResponseDTO responseDTO = bookMapper.toResponseDTO(found);
+        return ResponseEntity.ok(responseDTO);
     }
     @GetMapping
-    public ResponseEntity<List<Book>> findAll() {
+    public ResponseEntity<List<BookResponseDTO>> findAll() {
         List<Book> found = bookService.findAll();
-        return ResponseEntity.ok().body(found);
+        List<BookResponseDTO> foundDTO = new ArrayList<>();
+        for (var book : found) {
+            foundDTO.add(bookMapper.toResponseDTO(book));
+        }
+        return ResponseEntity.ok(foundDTO);
     }
     @PostMapping
-    public ResponseEntity<Book> insert(@RequestBody @Valid Book book) {
+    public ResponseEntity<BookResponseDTO> insert(@RequestBody @Valid BookRequestDTO bookRequestDTO) {
+        Book book = bookMapper.fromDTO(bookRequestDTO);
         Book newBook = bookService.insert(book);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(newBook.getId())
                 .toUri();
+        BookResponseDTO bookResponseDTO = bookMapper.toResponseDTO(newBook);
         return ResponseEntity.created(location)
-                .body(newBook);
+                .body(bookResponseDTO);
     }
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
@@ -53,9 +66,11 @@ public class BookController {
         return ResponseEntity.noContent().build();
     }
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Book> update(@PathVariable Long id, @Valid @RequestBody Book book) {
+    public ResponseEntity<BookResponseDTO> update(@PathVariable Long id, @Valid @RequestBody BookRequestDTO bookRequestDTO) {
+        Book book = bookMapper.fromDTO(bookRequestDTO);
         Book updated = bookService.update(id, book);
-        return ResponseEntity.ok().body(updated);
+        BookResponseDTO bookResponseDTO = bookMapper.toResponseDTO(updated);
+        return ResponseEntity.ok(bookResponseDTO);
 
     }
 

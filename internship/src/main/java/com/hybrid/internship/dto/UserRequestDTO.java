@@ -1,7 +1,6 @@
 package com.hybrid.internship.dto;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Objects;
 
 public class UserRequestDTO {
 

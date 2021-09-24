@@ -37,8 +37,9 @@ public class BookCopyController {
     public ResponseEntity<BookCopyResponseDTO> findOne(@PathVariable Long id, HttpServletRequest req) {
         BookCopy found = bookCopyService.findById(id);
         BookCopyResponseDTO responseDTO = modelMapper.toResponseDTO(found);
-        return ResponseEntity.ok().body(responseDTO);
+        return ResponseEntity.ok(responseDTO);
     }
+
     @GetMapping
     public ResponseEntity<List<BookCopyResponseDTO>> findAll() {
         List<BookCopy> found = bookCopyService.findAll();
@@ -46,8 +47,9 @@ public class BookCopyController {
         for (var bookCopy : found) {
             foundDTO.add(modelMapper.toResponseDTO(bookCopy));
         }
-        return ResponseEntity.ok().body(foundDTO);
+        return ResponseEntity.ok(foundDTO);
     }
+
     @PostMapping
     public ResponseEntity<BookCopyResponseDTO> insert(@RequestBody @Valid BookCopyRequestDTO bookCopyRequestDTO) {
         BookCopy bookCopy = modelMapper.fromDTO(bookCopyRequestDTO);
@@ -67,11 +69,12 @@ public class BookCopyController {
         bookCopyService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
     @PutMapping(value = "/{id}")
     public ResponseEntity<BookCopyResponseDTO> update(@PathVariable Long id, @RequestBody @Valid BookCopyRequestDTO bookCopyRequestDTO) {
         BookCopy bookCopy = modelMapper.fromDTO(bookCopyRequestDTO);
         BookCopy updated = bookCopyService.update(id, bookCopy);
         BookCopyResponseDTO responseDTO = modelMapper.toResponseDTO(updated);
-        return ResponseEntity.ok().body(responseDTO);
+        return ResponseEntity.ok(responseDTO);
     }
 }

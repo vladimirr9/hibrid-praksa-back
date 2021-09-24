@@ -20,9 +20,9 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
-    @Column(name = "author")
+    @Column(name = "author", nullable = false)
     private String author;
 
     @JsonManagedReference

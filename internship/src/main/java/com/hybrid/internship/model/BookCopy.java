@@ -18,7 +18,7 @@ public class BookCopy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "code", unique = true)
+    @Column(name = "code", unique = true, nullable = false)
     private String code;
     @JsonBackReference
     @ManyToOne

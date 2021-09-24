@@ -36,8 +36,9 @@ public class UserController {
     public ResponseEntity<UserResponseDTO> findOne(@PathVariable Long id, HttpServletRequest req) {
         User found = userService.findById(id);
         UserResponseDTO userResponseDTO = userMapper.toResponseDTO(found);
-        return ResponseEntity.ok().body(userResponseDTO);
+        return ResponseEntity.ok(userResponseDTO);
     }
+
     @GetMapping
     public ResponseEntity<List<UserResponseDTO>> findAll() {
         List<User> found = userService.findAll();
@@ -45,8 +46,9 @@ public class UserController {
         for (var user : found) {
             foundDTO.add(userMapper.toResponseDTO(user));
         }
-        return ResponseEntity.ok().body(foundDTO);
+        return ResponseEntity.ok(foundDTO);
     }
+
     @PostMapping
     public ResponseEntity<UserResponseDTO> insert(@RequestBody @Valid UserRequestDTO userRequestDTO) {
         User user = userMapper.fromDTO(userRequestDTO);
@@ -60,21 +62,21 @@ public class UserController {
         return ResponseEntity.created(location)
                 .body(newUserDTO);
     }
+
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
         userService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
     @PutMapping(value = "/{id}")
     public ResponseEntity<UserResponseDTO> update(@PathVariable Long id, @RequestBody @Valid UserRequestDTO userRequestDTO) {
         User user = userMapper.fromDTO(userRequestDTO);
         User updated = userService.update(id, user);
         UserResponseDTO userResponseDTO = userMapper.toResponseDTO(updated);
-        return ResponseEntity.ok().body(userResponseDTO);
+        return ResponseEntity.ok(userResponseDTO);
 
     }
-
-
 
 
 }

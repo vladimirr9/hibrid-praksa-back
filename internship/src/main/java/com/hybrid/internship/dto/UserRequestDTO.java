@@ -14,7 +14,8 @@ public class UserRequestDTO {
     @NotBlank(message = "Last name cannot be blank")
     private String lastName;
 
-    public UserRequestDTO() {}
+    public UserRequestDTO() {
+    }
 
     public String getEmail() {
         return email;

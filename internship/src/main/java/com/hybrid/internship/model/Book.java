@@ -1,22 +1,40 @@
 package com.hybrid.internship.model;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "book")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "title")
     private String title;
+    @Column(name = "author")
     private String author;
 
-    public Book(){}
+    @JsonManagedReference
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    private List<BookCopy> copies;
+
+    public Book(){
+    }
 
 
     public Book(Long id, String title, String author) {
-        Objects.requireNonNull(id);
-        this.id = id;
+        this.id = Objects.requireNonNull(id);
         init(title, author);
     }
 
@@ -41,4 +59,11 @@ public class Book {
         return author;
     }
 
+    public List<BookCopy> getCopies() {
+        return copies;
+    }
+
+    public void setId(Long id) {
+        this.id = Objects.requireNonNull(id);
+    }
 }

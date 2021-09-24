@@ -1,6 +1,6 @@
 package com.hybrid.internship.service;
 
-import com.hybrid.internship.exception.UserNotFoundException;
+import com.hybrid.internship.exception.EntityNotFoundException;
 import com.hybrid.internship.model.User;
 
 import java.util.List;
@@ -23,9 +23,9 @@ public interface UserService {
      *
      * @param id - ID of the user that we're looking for, cannot be null
      * @return - User with the given id
-     * @throws UserNotFoundException if no user with given id is found
+     * @throws EntityNotFoundException if no user with given id is found
      */
-    User findById(Long id) throws UserNotFoundException;
+    User findById(Long id) throws EntityNotFoundException;
 
     /**
      *

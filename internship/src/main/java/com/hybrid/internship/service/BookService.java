@@ -1,6 +1,6 @@
 package com.hybrid.internship.service;
 
-import com.hybrid.internship.exception.BookNotFoundException;
+import com.hybrid.internship.exception.EntityNotFoundException;
 import com.hybrid.internship.model.Book;
 
 import java.util.List;
@@ -24,9 +24,9 @@ public interface BookService {
      *
      * @param id - ID of the book that we're looking for, cannot be null
      * @return - Book with the given id
-     * @throws BookNotFoundException if no book with given id is found
+     * @throws EntityNotFoundException if no book with given id is found
      */
-    Book findById(Long id) throws BookNotFoundException;
+    Book findById(Long id) throws EntityNotFoundException;
 
     /**
      *

@@ -1,6 +1,6 @@
 package com.hybrid.internship.service;
 
-import com.hybrid.internship.exception.BookNotFoundException;
+import com.hybrid.internship.exception.EntityNotFoundException;
 import com.hybrid.internship.model.Book;
 import com.hybrid.internship.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +23,9 @@ public class BookServiceImpl implements BookService{
         return repository.save(newBook);
     }
 
-    public Book findById(Long id) throws BookNotFoundException {
+    public Book findById(Long id) throws EntityNotFoundException {
         Objects.requireNonNull(id);
-        return repository.findById(id).orElseThrow(() -> new BookNotFoundException("No book with this ID found"));
+        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("No book with this ID found"));
     }
 
     public void delete(Long id) {

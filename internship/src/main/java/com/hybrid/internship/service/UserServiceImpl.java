@@ -1,6 +1,6 @@
 package com.hybrid.internship.service;
 
-import com.hybrid.internship.exception.UserNotFoundException;
+import com.hybrid.internship.exception.EntityNotFoundException;
 import com.hybrid.internship.model.User;
 import com.hybrid.internship.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +23,9 @@ public class UserServiceImpl implements UserService {
         return repository.save(newUser);
     }
 
-    public User findById(Long id) throws UserNotFoundException {
+    public User findById(Long id) throws EntityNotFoundException {
         Objects.requireNonNull(id);
-        return repository.findById(id).orElseThrow(() -> new UserNotFoundException("No user with this ID found"));
+        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("No user with this ID found"));
     }
 
     public void delete(Long id) {

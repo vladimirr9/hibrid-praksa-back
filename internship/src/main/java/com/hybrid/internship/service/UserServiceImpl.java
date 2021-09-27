@@ -1,6 +1,7 @@
 package com.hybrid.internship.service;
 
 import com.hybrid.internship.exception.EntityNotFoundException;
+import com.hybrid.internship.exception.CurrentlyRentingException;
 import com.hybrid.internship.model.User;
 import com.hybrid.internship.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import java.util.Objects;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository repository;
+    @Autowired
+    private BookCopyService bookCopyService;
 
     public List<User> findAll() {
         return repository.findAll();
@@ -30,6 +33,9 @@ public class UserServiceImpl implements UserService {
 
     public void delete(Long id) {
         User userForDeletion = findById(id);
+        if (isUserRenting(id)){
+            throw new CurrentlyRentingException();
+        }
         repository.delete(userForDeletion);
     }
 
@@ -41,6 +47,11 @@ public class UserServiceImpl implements UserService {
                 newUser.getFirstName(),
                 newUser.getLastName());
         return repository.save(userForUpdate);
+    }
+
+    private boolean isUserRenting(Long id){
+        Objects.requireNonNull(id);
+        return !bookCopyService.findByUserId(id).isEmpty();
     }
 
 }

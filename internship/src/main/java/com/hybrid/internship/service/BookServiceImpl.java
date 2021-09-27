@@ -14,6 +14,7 @@ public class BookServiceImpl implements BookService{
     @Autowired
     private BookRepository repository;
 
+
     public List<Book> findAll() {
         return repository.findAll();
     }
@@ -38,4 +39,7 @@ public class BookServiceImpl implements BookService{
         Book bookForUpdate = new Book(id, newBook.getTitle(), newBook.getAuthor());
         return repository.save(bookForUpdate);
     }
+
+
+
 }

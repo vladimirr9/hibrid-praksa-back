@@ -20,7 +20,11 @@ public class UserMapper {
     }
 
     public UserResponseDTO toResponseDTO(User user) {
-        return new UserResponseDTO(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName());
+        return new UserResponseDTO(user.getId(),
+                user.getEmail(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getBookCopies());
     }
 
 }

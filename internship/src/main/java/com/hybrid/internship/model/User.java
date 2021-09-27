@@ -1,11 +1,16 @@
 package com.hybrid.internship.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -22,13 +27,18 @@ public class User {
     private String firstName;
     @Column(name = "lastName", nullable = false)
     private String lastName;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<BookCopy> bookCopies;
 
-    public User() {}
+    public User() {
+    }
 
     public User(Long id, String email, String password, String firstName, String lastName) {
         this.id = Objects.requireNonNull(id);
         init(email, password, firstName, lastName);
     }
+
     public User(String email, String password, String firstName, String lastName) {
         init(email, password, firstName, lastName);
     }
@@ -58,5 +68,9 @@ public class User {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public List<BookCopy> getBookCopies() {
+        return bookCopies;
     }
 }

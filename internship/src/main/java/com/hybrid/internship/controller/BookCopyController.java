@@ -3,6 +3,7 @@ package com.hybrid.internship.controller;
 
 import com.hybrid.internship.dto.BookCopyRequestDTO;
 import com.hybrid.internship.dto.BookCopyResponseDTO;
+import com.hybrid.internship.dto.RentRequestDTO;
 import com.hybrid.internship.dto.RentResponseDTO;
 import com.hybrid.internship.dto.mapper.BookCopyMapper;
 import com.hybrid.internship.dto.mapper.RentMapper;
@@ -93,10 +94,9 @@ public class BookCopyController {
         return ResponseEntity.ok(rentResponseDTO);
     }
 
-    @PostMapping(value = "/{id}/rent/users/{user_id}")
-    public ResponseEntity<RentResponseDTO> rentBookCopy(@PathVariable Long id, @PathVariable Long user_id) {
-
-        BookCopy bookCopy = bookCopyService.rent(id, user_id);
+    @PostMapping(value = "/{id}/rent")
+    public ResponseEntity<RentResponseDTO> rentBookCopy(@PathVariable Long id, @RequestBody @Valid RentRequestDTO rentRequestDTO) {
+        BookCopy bookCopy = bookCopyService.rent(id, rentRequestDTO.getUserId());
         RentResponseDTO rentResponseDTO = rentMapper.toResponseDTO(bookCopy);
         return ResponseEntity.ok(rentResponseDTO);
     }

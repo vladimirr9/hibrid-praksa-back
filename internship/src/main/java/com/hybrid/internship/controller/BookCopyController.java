@@ -7,6 +7,7 @@ import com.hybrid.internship.dto.RentResponseDTO;
 import com.hybrid.internship.dto.mapper.BookCopyMapper;
 import com.hybrid.internship.dto.mapper.RentMapper;
 import com.hybrid.internship.model.BookCopy;
+import com.hybrid.internship.model.User;
 import com.hybrid.internship.service.BookCopyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/v1/bookcopies/")
+@RequestMapping(value = "/api/v1/book-copies/")
 public class BookCopyController {
     @Autowired
     private BookCopyService bookCopyService;
@@ -38,7 +39,7 @@ public class BookCopyController {
     private RentMapper rentMapper;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<BookCopyResponseDTO> findOne(@PathVariable Long id, HttpServletRequest req) {
+    public ResponseEntity<BookCopyResponseDTO> findOne(@PathVariable Long id) {
         BookCopy found = bookCopyService.findById(id);
         BookCopyResponseDTO responseDTO = bookCopyMapper.toResponseDTO(found);
         return ResponseEntity.ok(responseDTO);
@@ -84,9 +85,10 @@ public class BookCopyController {
 
     @GetMapping(value = "/{id}/rent")
     public ResponseEntity<RentResponseDTO> findUserWhoRents(@PathVariable Long id) {
+
         BookCopy bookCopy = bookCopyService.findById(id);
-        Long userId = bookCopy.getUser() == null ? null : bookCopy.getUser().getId();
-        String userEmail = bookCopy.getUser() == null ? null : bookCopy.getUser().getEmail();
+        Long userId = bookCopyService.getUserIDForBookCopy(bookCopy);
+        String userEmail = bookCopyService.getUserEmailForBookCopy(bookCopy);
         RentResponseDTO rentResponseDTO = rentMapper.toResponseDTO(bookCopy, userId, userEmail);
         return ResponseEntity.ok(rentResponseDTO);
     }

@@ -56,4 +56,9 @@ public interface BookCopyService {
      * @return - All copies currently rented out by the user
      */
     List<BookCopy> findByUserId(Long id);
+    
+
+    Long getUserIDForBookCopy(BookCopy bookCopy);
+
+    String getUserEmailForBookCopy(BookCopy bookCopy);
 }

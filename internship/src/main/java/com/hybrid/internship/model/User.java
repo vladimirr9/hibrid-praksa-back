@@ -73,4 +73,13 @@ public class User {
     public List<BookCopy> getBookCopies() {
         return bookCopies;
     }
+
+    public void setPassword(String password) {
+        this.password = Objects.requireNonNull(password);
+    }
+
+    @Override
+    public String toString() {
+        return email;
+    }
 }

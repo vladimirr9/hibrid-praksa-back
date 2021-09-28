@@ -5,6 +5,10 @@ import com.hybrid.internship.exception.CurrentlyRentingException;
 import com.hybrid.internship.model.User;
 import com.hybrid.internship.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +20,8 @@ public class UserServiceImpl implements UserService {
     private UserRepository repository;
     @Autowired
     private BookCopyService bookCopyService;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public List<User> findAll() {
         return repository.findAll();
@@ -23,6 +29,7 @@ public class UserServiceImpl implements UserService {
 
     public User insert(User newUser) {
         Objects.requireNonNull(newUser);
+        encryptPassword(newUser);
         return repository.save(newUser);
     }
 
@@ -41,6 +48,7 @@ public class UserServiceImpl implements UserService {
 
     public User update(Long id, User newUser) {
         Objects.requireNonNull(newUser);
+        encryptPassword(newUser);
         User userForUpdate = new User(id,
                 newUser.getEmail(),
                 newUser.getPassword(),
@@ -49,9 +57,11 @@ public class UserServiceImpl implements UserService {
         return repository.save(userForUpdate);
     }
 
-    private boolean isUserRenting(Long id){
+    private boolean isUserRenting(Long id) {
         Objects.requireNonNull(id);
         return !bookCopyService.findByUserId(id).isEmpty();
     }
-
+    private void encryptPassword(User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+    }
 }

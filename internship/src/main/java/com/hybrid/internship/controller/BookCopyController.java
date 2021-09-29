@@ -4,10 +4,12 @@ package com.hybrid.internship.controller;
 import com.hybrid.internship.documentation.GlobalApiResponses;
 import com.hybrid.internship.dto.BookCopyRequestDTO;
 import com.hybrid.internship.dto.BookCopyResponseDTO;
+import com.hybrid.internship.dto.RentRequestDTO;
 import com.hybrid.internship.dto.RentResponseDTO;
 import com.hybrid.internship.dto.mapper.BookCopyMapper;
 import com.hybrid.internship.dto.mapper.RentMapper;
 import com.hybrid.internship.model.BookCopy;
+import com.hybrid.internship.model.User;
 import com.hybrid.internship.service.BookCopyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -32,8 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/v1/bookcopies/")
 @GlobalApiResponses
+@RequestMapping(value = "/api/v1/book-copies/")
 public class BookCopyController {
     @Autowired
     private BookCopyService bookCopyService;
@@ -45,7 +47,7 @@ public class BookCopyController {
     @Operation(summary = "Get a book copy by its id")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Book copy found")})
     @GetMapping(value = "/{id}")
-    public ResponseEntity<BookCopyResponseDTO> findOne(@PathVariable Long id, HttpServletRequest req) {
+    public ResponseEntity<BookCopyResponseDTO> findOne(@PathVariable Long id) {
         BookCopy found = bookCopyService.findById(id);
         BookCopyResponseDTO responseDTO = bookCopyMapper.toResponseDTO(found);
         return ResponseEntity.ok(responseDTO);
@@ -101,20 +103,19 @@ public class BookCopyController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Renting info displayed")})
     @GetMapping(value = "/{id}/rent")
     public ResponseEntity<RentResponseDTO> findUserWhoRents(@PathVariable Long id) {
+
         BookCopy bookCopy = bookCopyService.findById(id);
-        Long userId = bookCopy.getUser() == null ? null : bookCopy.getUser().getId();
-        String userEmail = bookCopy.getUser() == null ? null : bookCopy.getUser().getEmail();
+        Long userId = bookCopyService.getUserIDForBookCopy(bookCopy);
+        String userEmail = bookCopyService.getUserEmailForBookCopy(bookCopy);
         RentResponseDTO rentResponseDTO = rentMapper.toResponseDTO(bookCopy, userId, userEmail);
         return ResponseEntity.ok(rentResponseDTO);
     }
 
-
     @Operation(summary = "Rent out a book copy to a user")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Book copy rented out")})
-    @PostMapping(value = "/{id}/rent/users/{user_id}")
-    public ResponseEntity<RentResponseDTO> rentBookCopy(@PathVariable Long id, @PathVariable Long user_id) {
-
-        BookCopy bookCopy = bookCopyService.rent(id, user_id);
+    @PostMapping(value = "/{id}/rent")
+    public ResponseEntity<RentResponseDTO> rentBookCopy(@PathVariable Long id, @RequestBody @Valid RentRequestDTO rentRequestDTO) {
+        BookCopy bookCopy = bookCopyService.rent(id, rentRequestDTO.getUserId());
         RentResponseDTO rentResponseDTO = rentMapper.toResponseDTO(bookCopy);
         return ResponseEntity.ok(rentResponseDTO);
     }

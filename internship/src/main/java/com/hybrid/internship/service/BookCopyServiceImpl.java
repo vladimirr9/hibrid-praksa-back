@@ -88,5 +88,13 @@ public class BookCopyServiceImpl implements BookCopyService {
         return repository.findByUserId(id);
     }
 
+    public Long getUserIDForBookCopy(BookCopy bookCopy) {
+        return bookCopy.getUser() == null ? null : bookCopy.getUser().getId();
+    }
+
+    public String getUserEmailForBookCopy(BookCopy bookCopy) {
+        return bookCopy.getUser() == null ? null : bookCopy.getUser().getEmail();
+    }
+
 
 }

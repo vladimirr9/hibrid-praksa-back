@@ -4,8 +4,10 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hybrid.internship.dto.UserRequestDTO;
+import com.hybrid.internship.exception.handler.ErrorMessage;
 import com.hybrid.internship.model.MyUserDetails;
 import com.hybrid.internship.model.User;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -68,8 +70,13 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void unsuccessfulAuthentication(javax.servlet.http.HttpServletRequest request,
                                               javax.servlet.http.HttpServletResponse response,
                                               AuthenticationException failed) throws IOException {
-        response.getWriter().write("Invalid combination of username and password");
-        response.getWriter().flush();
+            ObjectMapper objectMapper = new ObjectMapper();
+            ErrorMessage errorMessage = new ErrorMessage("Invalid combination of username and password", new Date());
+            String returnVal = objectMapper.writeValueAsString(errorMessage);
 
+            response.setStatus(400);
+            response.setContentType(String.valueOf(MediaType.APPLICATION_JSON));
+            response.getWriter().write(returnVal);
+            response.getWriter().flush();
     }
 }

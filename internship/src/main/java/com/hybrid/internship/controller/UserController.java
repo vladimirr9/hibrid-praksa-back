@@ -1,5 +1,6 @@
 package com.hybrid.internship.controller;
 
+import com.hybrid.internship.documentation.GlobalApiResponses;
 import com.hybrid.internship.dto.UserRequestDTO;
 import com.hybrid.internship.dto.UserResponseDTO;
 import com.hybrid.internship.dto.mapper.UserMapper;
@@ -29,6 +30,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1/users")
+@GlobalApiResponses
 public class UserController {
     @Autowired
     private UserService userService;
@@ -44,7 +46,7 @@ public class UserController {
         return ResponseEntity.ok(userResponseDTO);
     }
 
-    @Operation(summary = "Get all books in the system")
+    @Operation(summary = "Get all users in the system")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Users found")})
     @GetMapping
     public ResponseEntity<List<UserResponseDTO>> findAll() {

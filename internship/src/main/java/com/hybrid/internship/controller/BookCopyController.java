@@ -1,6 +1,7 @@
 package com.hybrid.internship.controller;
 
 
+import com.hybrid.internship.documentation.GlobalApiResponses;
 import com.hybrid.internship.dto.BookCopyRequestDTO;
 import com.hybrid.internship.dto.BookCopyResponseDTO;
 import com.hybrid.internship.dto.RentResponseDTO;
@@ -32,6 +33,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1/bookcopies/")
+@GlobalApiResponses
 public class BookCopyController {
     @Autowired
     private BookCopyService bookCopyService;

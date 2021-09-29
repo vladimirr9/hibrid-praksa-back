@@ -7,9 +7,11 @@ import com.hybrid.internship.dto.UserRequestDTO;
 import com.hybrid.internship.model.MyUserDetails;
 import com.hybrid.internship.model.User;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -62,5 +64,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         res.getWriter().write(body);
         res.getWriter().flush();
+    }
+    protected void unsuccessfulAuthentication(javax.servlet.http.HttpServletRequest request,
+                                              javax.servlet.http.HttpServletResponse response,
+                                              AuthenticationException failed) throws IOException {
+        response.getWriter().write("Invalid combination of username and password");
+        response.getWriter().flush();
+
     }
 }

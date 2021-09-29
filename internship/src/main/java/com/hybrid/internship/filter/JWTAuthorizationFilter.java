@@ -2,9 +2,12 @@ package com.hybrid.internship.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -12,7 +15,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import static com.hybrid.internship.Constants.HEADER_STRING;
 import static com.hybrid.internship.Constants.SECRET;
@@ -20,8 +22,11 @@ import static com.hybrid.internship.Constants.TOKEN_PREFIX;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-    public JWTAuthorizationFilter(AuthenticationManager authManager) {
+    private UserDetailsService userDetailsService;
+
+    public JWTAuthorizationFilter(AuthenticationManager authManager, UserDetailsService userDetailsService) {
         super(authManager);
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
@@ -51,8 +56,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                     .getSubject();
 
             if (user != null) {
-                // new arraylist means authorities
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+                UserDetails userDetails = userDetailsService.loadUserByUsername(user);
+                return new UsernamePasswordAuthenticationToken(user, null, userDetails.getAuthorities());
             }
 
             return null;

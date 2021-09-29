@@ -1,6 +1,7 @@
 package com.hybrid.internship.model;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -8,14 +9,16 @@ import java.util.Collection;
 
 public class MyUserDetails implements UserDetails {
     private User user;
+    private Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
     public MyUserDetails(User user) {
         this.user = user;
+        authorities.add(new SimpleGrantedAuthority(user.getRole().getName().name()));
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new ArrayList<>();
+        return authorities;
     }
 
     @Override

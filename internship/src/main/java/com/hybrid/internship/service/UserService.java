@@ -40,4 +40,6 @@ public interface UserService {
      * @return - Newly replaced user
      */
     User update(Long id, User newUser);
+
+    User insertAdmin(User user);
 }

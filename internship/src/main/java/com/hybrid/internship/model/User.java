@@ -8,6 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
@@ -30,6 +33,11 @@ public class User {
     @JsonManagedReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<BookCopy> bookCopies;
+    @ManyToOne()
+    @JoinTable(	name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Role role;
 
     public User() {
     }
@@ -74,12 +82,19 @@ public class User {
         return bookCopies;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
     public void setPassword(String password) {
         this.password = Objects.requireNonNull(password);
     }
 
-    @Override
     public String toString() {
         return email;
+    }
+
+    public void setRole(Role role) {
+        this.role = Objects.requireNonNull(role);
     }
 }

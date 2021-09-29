@@ -34,9 +34,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<BookCopy> bookCopies;
     @ManyToOne()
-    @JoinTable(	name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
     public User() {

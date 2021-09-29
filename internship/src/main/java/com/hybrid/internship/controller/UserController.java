@@ -61,7 +61,6 @@ public class UserController {
         return ResponseEntity.ok(foundDTO);
     }
 
-    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @Operation(summary = "Add a new user to the system")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "New user created")})
     @PostMapping

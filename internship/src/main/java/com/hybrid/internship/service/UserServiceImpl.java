@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
     public User insert(User newUser) {
         Objects.requireNonNull(newUser);
         encryptPassword(newUser);
-        newUser.setRole(roleRepository.findByName(ERole.ROLE_USER).get());
+        newUser.setRole(roleRepository.findByName(ERole.ROLE_USER).orElseThrow(() -> new EntityNotFoundException("No user role found")));
         return repository.save(newUser);
     }
 
@@ -56,14 +56,14 @@ public class UserServiceImpl implements UserService {
                 newUser.getPassword(),
                 newUser.getFirstName(),
                 newUser.getLastName());
-        newUser.setRole(roleRepository.findByName(ERole.ROLE_USER).get());
+        newUser.setRole(roleRepository.findByName(ERole.ROLE_USER).orElseThrow(() -> new EntityNotFoundException("No user role found")));
         return repository.save(userForUpdate);
     }
 
     public User insertAdmin(User newUser) {
         Objects.requireNonNull(newUser);
         encryptPassword(newUser);
-        newUser.setRole(roleRepository.findByName(ERole.ROLE_ADMIN).get());
+        newUser.setRole(roleRepository.findByName(ERole.ROLE_ADMIN).orElseThrow(() -> new EntityNotFoundException("No admin role found")));
         return repository.save(newUser);
     }
 

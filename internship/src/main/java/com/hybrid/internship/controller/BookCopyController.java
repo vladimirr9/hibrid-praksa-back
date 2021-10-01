@@ -1,6 +1,7 @@
 package com.hybrid.internship.controller;
 
 
+import com.hybrid.internship.documentation.GlobalApiResponses;
 import com.hybrid.internship.dto.BookCopyRequestDTO;
 import com.hybrid.internship.dto.BookCopyResponseDTO;
 import com.hybrid.internship.dto.RentRequestDTO;
@@ -10,6 +11,9 @@ import com.hybrid.internship.dto.mapper.RentMapper;
 import com.hybrid.internship.model.BookCopy;
 import com.hybrid.internship.model.User;
 import com.hybrid.internship.service.BookCopyService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@GlobalApiResponses
 @RequestMapping(value = "/api/v1/book-copies/")
 public class BookCopyController {
     @Autowired
@@ -39,6 +44,8 @@ public class BookCopyController {
     @Autowired
     private RentMapper rentMapper;
 
+    @Operation(summary = "Get a book copy by its id")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Book copy found")})
     @GetMapping(value = "/{id}")
     public ResponseEntity<BookCopyResponseDTO> findOne(@PathVariable Long id) {
         BookCopy found = bookCopyService.findById(id);
@@ -46,6 +53,8 @@ public class BookCopyController {
         return ResponseEntity.ok(responseDTO);
     }
 
+    @Operation(summary = "Get all book copies")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Book found")})
     @GetMapping
     public ResponseEntity<List<BookCopyResponseDTO>> findAll() {
         List<BookCopy> found = bookCopyService.findAll();
@@ -56,6 +65,8 @@ public class BookCopyController {
         return ResponseEntity.ok(foundDTO);
     }
 
+    @Operation(summary = "Create a new book copy")
+    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "New book copy created")})
     @PostMapping
     public ResponseEntity<BookCopyResponseDTO> insert(@RequestBody @Valid BookCopyRequestDTO bookCopyRequestDTO) {
         BookCopy bookCopy = bookCopyMapper.fromDTO(bookCopyRequestDTO);
@@ -70,12 +81,16 @@ public class BookCopyController {
                 .body(responseDTO);
     }
 
+    @Operation(summary = "Remove a book copy based on its id")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Book copy removed")})
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
         bookCopyService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Replaced a book copy based on its id")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Book copy replaced")})
     @PutMapping(value = "/{id}")
     public ResponseEntity<BookCopyResponseDTO> update(@PathVariable Long id, @RequestBody @Valid BookCopyRequestDTO bookCopyRequestDTO) {
         BookCopy bookCopy = bookCopyMapper.fromDTO(bookCopyRequestDTO);
@@ -84,6 +99,8 @@ public class BookCopyController {
         return ResponseEntity.ok(responseDTO);
     }
 
+    @Operation(summary = "Find user who is renting the book copy with given id")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Renting info displayed")})
     @GetMapping(value = "/{id}/rent")
     public ResponseEntity<RentResponseDTO> findUserWhoRents(@PathVariable Long id) {
 
@@ -94,6 +111,8 @@ public class BookCopyController {
         return ResponseEntity.ok(rentResponseDTO);
     }
 
+    @Operation(summary = "Rent out a book copy to a user")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Book copy rented out")})
     @PostMapping(value = "/{id}/rent")
     public ResponseEntity<RentResponseDTO> rentBookCopy(@PathVariable Long id, @RequestBody @Valid RentRequestDTO rentRequestDTO) {
         BookCopy bookCopy = bookCopyService.rent(id, rentRequestDTO.getUserId());
@@ -101,6 +120,8 @@ public class BookCopyController {
         return ResponseEntity.ok(rentResponseDTO);
     }
 
+    @Operation(summary = "Stop renting out a book copy to a user")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Book copy withdrawn from renting")})
     @PutMapping(value = "/{id}/rent")
     public ResponseEntity<RentResponseDTO> stopRent(@PathVariable Long id) {
         BookCopy bookCopy = bookCopyService.stopRent(id);

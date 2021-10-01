@@ -1,10 +1,14 @@
 package com.hybrid.internship.controller;
 
+import com.hybrid.internship.documentation.GlobalApiResponses;
 import com.hybrid.internship.dto.UserRequestDTO;
 import com.hybrid.internship.dto.UserResponseDTO;
 import com.hybrid.internship.dto.mapper.UserMapper;
 import com.hybrid.internship.model.User;
 import com.hybrid.internship.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,12 +30,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1/users")
+@GlobalApiResponses
 public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
     private UserMapper userMapper;
 
+    @Operation(summary = "Find a user based on their id")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "User found")})
     @GetMapping(value = "/{id}")
     public ResponseEntity<UserResponseDTO> findOne(@PathVariable Long id, HttpServletRequest req) {
         User found = userService.findById(id);
@@ -39,6 +46,8 @@ public class UserController {
         return ResponseEntity.ok(userResponseDTO);
     }
 
+    @Operation(summary = "Get all users in the system")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Users found")})
     @GetMapping
     public ResponseEntity<List<UserResponseDTO>> findAll() {
         List<User> found = userService.findAll();
@@ -49,6 +58,8 @@ public class UserController {
         return ResponseEntity.ok(foundDTO);
     }
 
+    @Operation(summary = "Add a new user to the system")
+    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "New user created")})
     @PostMapping
     public ResponseEntity<UserResponseDTO> insert(@RequestBody @Valid UserRequestDTO userRequestDTO) {
         User user = userMapper.fromDTO(userRequestDTO);
@@ -63,12 +74,16 @@ public class UserController {
                 .body(newUserDTO);
     }
 
+    @Operation(summary = "Remove a user based on their id")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "User removed")})
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
         userService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Replace a user based on their id")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "User replaced")})
     @PutMapping(value = "/{id}")
     public ResponseEntity<UserResponseDTO> update(@PathVariable Long id, @RequestBody @Valid UserRequestDTO userRequestDTO) {
         User user = userMapper.fromDTO(userRequestDTO);

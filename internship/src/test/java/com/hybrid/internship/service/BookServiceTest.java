@@ -50,9 +50,6 @@ class BookServiceTest {
     void testGetOneFail() {
         Long id = 1L;
         when(bookRepository.findById(anyLong())).thenReturn(Optional.empty());
-
         Throwable exception = assertThrows(EntityNotFoundException.class, () -> bookService.findById(id));
-
-
     }
 }

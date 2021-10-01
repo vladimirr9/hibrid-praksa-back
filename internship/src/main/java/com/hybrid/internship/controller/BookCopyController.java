@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.ArrayList;
@@ -44,6 +44,7 @@ public class BookCopyController {
     @Autowired
     private RentMapper rentMapper;
 
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @Operation(summary = "Get a book copy by its id")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Book copy found")})
     @GetMapping(value = "/{id}")
@@ -53,6 +54,7 @@ public class BookCopyController {
         return ResponseEntity.ok(responseDTO);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @Operation(summary = "Get all book copies")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Book found")})
     @GetMapping
@@ -65,6 +67,7 @@ public class BookCopyController {
         return ResponseEntity.ok(foundDTO);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Create a new book copy")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "New book copy created")})
     @PostMapping
@@ -81,6 +84,7 @@ public class BookCopyController {
                 .body(responseDTO);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Remove a book copy based on its id")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Book copy removed")})
     @DeleteMapping(value = "/{id}")
@@ -89,6 +93,7 @@ public class BookCopyController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Replaced a book copy based on its id")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Book copy replaced")})
     @PutMapping(value = "/{id}")
@@ -99,6 +104,7 @@ public class BookCopyController {
         return ResponseEntity.ok(responseDTO);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @Operation(summary = "Find user who is renting the book copy with given id")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Renting info displayed")})
     @GetMapping(value = "/{id}/rent")
@@ -111,6 +117,7 @@ public class BookCopyController {
         return ResponseEntity.ok(rentResponseDTO);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @Operation(summary = "Rent out a book copy to a user")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Book copy rented out")})
     @PostMapping(value = "/{id}/rent")
@@ -120,6 +127,7 @@ public class BookCopyController {
         return ResponseEntity.ok(rentResponseDTO);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @Operation(summary = "Stop renting out a book copy to a user")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Book copy withdrawn from renting")})
     @PutMapping(value = "/{id}/rent")

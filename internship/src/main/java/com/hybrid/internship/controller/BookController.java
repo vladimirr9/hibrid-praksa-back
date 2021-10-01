@@ -12,6 +12,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
@@ -37,6 +40,7 @@ public class BookController {
     @Autowired
     private BookMapper bookMapper;
 
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @Operation(summary = "Get a book by its id")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Book found")})
     @GetMapping(value = "/{id}")
@@ -45,6 +49,7 @@ public class BookController {
         BookResponseDTO responseDTO = bookMapper.toResponseDTO(found);
         return ResponseEntity.ok(responseDTO);
     }
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @Operation(summary = "Get all books in the system")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Books found")})
     @GetMapping
@@ -56,6 +61,7 @@ public class BookController {
         }
         return ResponseEntity.ok(foundDTO);
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Add a new book to the system")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Added new book to the system")})
     @PostMapping
@@ -71,6 +77,7 @@ public class BookController {
         return ResponseEntity.created(location)
                 .body(bookResponseDTO);
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Remove a book based on its id")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Book removed")})
     @DeleteMapping(value = "/{id}")
@@ -78,6 +85,7 @@ public class BookController {
         bookService.delete(id);
         return ResponseEntity.noContent().build();
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Replace a book based on its id")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Book replaced")})
     @PutMapping(value = "/{id}")

@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +38,7 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
 
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @Operation(summary = "Find a user based on their id")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "User found")})
     @GetMapping(value = "/{id}")
@@ -46,6 +48,7 @@ public class UserController {
         return ResponseEntity.ok(userResponseDTO);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @Operation(summary = "Get all users in the system")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Users found")})
     @GetMapping
@@ -73,7 +76,23 @@ public class UserController {
         return ResponseEntity.created(location)
                 .body(newUserDTO);
     }
+    @Operation(summary = "Add a new admin to the system")
+    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "New user created")})
+    @PostMapping(value = "/admin")
+    public ResponseEntity<UserResponseDTO> insertAdmin(@RequestBody @Valid UserRequestDTO userRequestDTO) {
+        User user = userMapper.fromDTO(userRequestDTO);
+        User newUser = userService.insertAdmin(user);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(newUser.getId())
+                .toUri();
+        UserResponseDTO newUserDTO = userMapper.toResponseDTO(newUser);
+        return ResponseEntity.created(location)
+                .body(newUserDTO);
+    }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Remove a user based on their id")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "User removed")})
     @DeleteMapping(value = "/{id}")
@@ -82,6 +101,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Replace a user based on their id")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "User replaced")})
     @PutMapping(value = "/{id}")

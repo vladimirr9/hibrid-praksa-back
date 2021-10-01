@@ -3,7 +3,6 @@ package com.hybrid.internship.service;
 import com.hybrid.internship.exception.EntityNotFoundException;
 import com.hybrid.internship.model.Book;
 import com.hybrid.internship.repository.BookRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +10,12 @@ import java.util.Objects;
 
 @Service
 public class BookServiceImpl implements BookService{
-    @Autowired
+
     private BookRepository repository;
 
+    public BookServiceImpl(BookRepository repository) {
+        this.repository = repository;
+    }
 
     public List<Book> findAll() {
         return repository.findAll();
